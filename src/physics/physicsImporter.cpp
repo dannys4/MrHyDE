@@ -27,6 +27,7 @@
 #include "maxwell.hpp"
 #include "ode.hpp"
 #include "burgers.hpp"
+#include "variableDensityBurgers.hpp"
 #include "kuramotoSivashinsky.hpp"
 #include "llamas.hpp"
 #include "variableDensityNS.hpp"
@@ -54,6 +55,7 @@ vector<Teuchos::RCP<PhysicsBase<EvalT> > > PhysicsImporter<EvalT>::import(vector
   
   for (size_t mod=0; mod<module_list.size(); mod++) {
     string modname = module_list[mod];
+    std::cout << "Importing physics module: " << modname << std::endl;
     
     // Test module which procedurally assembles and dumps basis functions based on parameterlist settings
     if (modname == "physicsTest") {
@@ -152,6 +154,11 @@ vector<Teuchos::RCP<PhysicsBase<EvalT> > > PhysicsImporter<EvalT>::import(vector
     // Scalar Burgers equation
     if (modname == "Burgers"){
       modules.push_back(Teuchos::rcp(new Burgers<EvalT>(settings, dimension) ) );
+    }
+
+    // Scalar Burgers equation with variable density
+    if (modname == "VDBurgers" || modname == "variable density burgers"){
+      modules.push_back(Teuchos::rcp(new VariableDensityBurgers<EvalT>(settings, dimension) ) );
     }
 
     // Kuramoto-Sivashinsky equation
