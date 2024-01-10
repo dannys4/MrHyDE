@@ -33,12 +33,10 @@ ANONYMOUS:
     quadrature: 2
   Solver:
     solver: transient
+    transient Butcher tableau: BWE
     workset size: 100
-    nonlinear TOL: 1.0e-10
-    final time: 1.0e-3
-    linear TOL: 1.0e-10
-    max nonlinear iters: 1
-    max linear iters: 500
+    final time: 1.0
+    delta t: 0.01
     use direct solver: true
   Analysis: 
     analysis type: forward
