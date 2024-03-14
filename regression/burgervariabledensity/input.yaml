@@ -1,42 +1,35 @@
 %YAML 1.1
 ---
 ANONYMOUS:
-  verbosity: 1
+  verbosity: 0
   debug level: 0
   Mesh:
     dimension: 1
     element type: interval
     xmin: 0.0
     xmax:  1.0
-    NX: 2000
+    NX: 128
+    Periodic BCs:
+      Count: 1
+      Periodic Condition 1: 'y-all 1e-8: left;right'
   Physics:
     modules: VDBurgers
-    Dirichlet conditions:
-      rhou:
-        left: '0.0'
-        right: '1/((t+1)*(t+1))'
-      rho:
-        left: '1/(t+1)'
-        right: '1/(t+1)'
-      F:
-        left: '0.0'
-        right: '0.0'
     Initial conditions:
-      rhou: 'x'
+      rhou: '5*sin(2*pi*x)'
       rho: '1.0'
       F: '0.0'
   Discretization:
     order:
-      rhou: 1
-      rho: 1
-      F: 1
-    quadrature: 2
+      rhou: 2
+      rho: 2
+      F: 2
+    quadrature: 4
   Solver:
     solver: transient
     transient Butcher tableau: BWE
     workset size: 100
-    final time: 1.0
-    delta t: 0.01
+    final time: 0.1
+    delta t: 0.005
     use direct solver: true
   Analysis: 
     analysis type: forward
@@ -46,17 +39,20 @@ ANONYMOUS:
     compute objective: true
     compute responses: true
     Objective functions:
-      rhoval:
+      rho_val:
         type: sensors
         sensor points file: sensor_points.dat
         save sensor data: true
         sensor data file: sensor_data.dat
         response: 'rho'
         weight: 1.0
+      rhou_val:
+        type: sensors
+        sensor points file: sensor_points.dat
+        save sensor data: true
+        sensor data file: sensor_data.dat
+        response: 'rhou'
+        weight: 1.0
   Functions:
-  Parameters:
-    alpha:
-      type: scalar
-      value: 0.0
-      usage: inactive
+    alpha: '0.0'
 ...

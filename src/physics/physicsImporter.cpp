@@ -55,7 +55,6 @@ vector<Teuchos::RCP<PhysicsBase<EvalT> > > PhysicsImporter<EvalT>::import(vector
   
   for (size_t mod=0; mod<module_list.size(); mod++) {
     string modname = module_list[mod];
-    std::cout << "Importing physics module: " << modname << std::endl;
     
     // Test module which procedurally assembles and dumps basis functions based on parameterlist settings
     if (modname == "physicsTest") {
