@@ -1213,6 +1213,26 @@ vector<ScalarT> ParameterManager<Node>::getStochasticParams(const std::string & 
   }
 }
 
+template<class Node>
+vector<int> ParameterManager<Node>::getParameterIndices(const std::vector<std::string> &whichparam) {
+  vector<int> indices (whichparam.size());
+  for (size_t i=0; i<whichparam.size(); i++) {
+    for (size_t j=0; j<paramnames.size(); j++) {
+      if (paramnames[j] == whichparam[i]) {
+        indices.push_back(j);
+      }
+    }
+  }
+  return indices;
+}
+
+void ParameterManager<Node>::setParameters(const std::vector<double> &new_vals, const std::vector<int> &indices) {
+  for (size_t i=0; i<indices.size(); i++) {
+    // TODO: Test if paramvals[indices[i]] is of length 1, i.e., scalar
+    paramvals[indices[i]][0] = new_vals[i];
+  }
+}
+
 // ========================================================================================
 // ========================================================================================
 
