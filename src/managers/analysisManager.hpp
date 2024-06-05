@@ -16,10 +16,10 @@
 
 #include "trilinos.hpp"
 #include "preferences.hpp"
-#include "solverManager.hpp"
-#include "postprocessManager.hpp"
-#include "parameterManager.hpp"
-#include "MrHyDE_Debugger.hpp"
+#include "managers/solverManager.hpp"
+#include "managers/postprocessManager.hpp"
+#include "managers/parameterManager.hpp"
+#include "tools/MrHyDE_Debugger.hpp"
 
 namespace MrHyDE {
   

@@ -16,7 +16,7 @@
 
 #include "trilinos.hpp"
 #include "preferences.hpp"
-#include "MrHyDE_Debugger.hpp"
+#include "tools/MrHyDE_Debugger.hpp"
 
 #include "physics/physicsBase.hpp"
 #include "tools/workset.hpp"

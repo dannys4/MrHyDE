@@ -7,7 +7,7 @@ ObservationInterface::ObservationInterface(
         Teuchos::RCP<MpiComm> & Comm_,
         std::vector<std::string>& which_params) : Comm(Comm_) {
 
-    Teuchos::RCP<Teuchos::ParameterList> settings = UserInterfaceFactory::UserInterface(filename);
+    settings = UserInterfaceFactory::UserInterface(filename);
     // TODO: check that the postprocess is an observation with adjoint
     
     ////////////////////////////////////////////////////////////////////////////////

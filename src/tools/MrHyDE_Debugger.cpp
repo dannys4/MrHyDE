@@ -6,8 +6,8 @@
  Questions? Contact Tim Wildey (tmwilde@sandia.gov) 
 ************************************************************************/
 
-#include "MrHyDE_Debugger.hpp"
-#include "kokkosTools.hpp"
+#include "tools/MrHyDE_Debugger.hpp"
+#include "tools/kokkosTools.hpp"
 
 using namespace MrHyDE;
 

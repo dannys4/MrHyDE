@@ -18,7 +18,7 @@
 #include "Compadre_PointCloudSearch.hpp"
 #include "Compadre_KokkosParser.hpp"
 #include "Compadre_NeighborLists.hpp"
-#include "MrHyDE_Debugger.hpp"
+#include "tools/MrHyDE_Debugger.hpp"
 
 #include <iostream>
 #include <iterator>
