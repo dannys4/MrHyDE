@@ -2304,7 +2304,7 @@ void PostprocessManager<Node>::computeObjective(vector<vector_RCP> & current_sol
   debugger->print(1, "******** Finished PostprocessManager::computeObjective ...");
   
   objectiveval += fullobj;
-  
+  saveObjectiveData(objectiveval);
 
 }
 
