@@ -4,23 +4,23 @@ using namespace MrHyDE;
 
 ObservationInterface::ObservationInterface(
         std::string filename,
-        const Teuchos::RCP<MpiComm> Comm_,
+        Teuchos::RCP<MpiComm> & Comm_,
         std::vector<std::string>& which_params) : Comm(Comm_) {
 
-    Teuchos::RCP<Teuchos::ParameterList> settings = UserInterface(filename);
+    Teuchos::RCP<Teuchos::ParameterList> settings = UserInterfaceFactory::UserInterface(filename);
     // TODO: check that the postprocess is an observation with adjoint
     
     ////////////////////////////////////////////////////////////////////////////////
     // Create the mesh
     ////////////////////////////////////////////////////////////////////////////////
     
-    mesh = Teuchos::rcp(new MeshInterface(settings, Comm) );
+    mesh = Teuchos::rcp(new MeshInterface(settings, Comm_) );
   
     ////////////////////////////////////////////////////////////////////////////////
     // Set up the physics
     ////////////////////////////////////////////////////////////////////////////////
     
-    physics = Teuchos::rcp( new PhysicsInterface(settings, Comm, 
+    physics = Teuchos::rcp( new PhysicsInterface(settings, Comm_, 
                                                  mesh->getBlockNames(),
                                                  mesh->getSideNames(),
                                                  mesh->getDimension()) );
@@ -35,9 +35,9 @@ ObservationInterface::ObservationInterface(
     // Define the discretization(s)
     ////////////////////////////////////////////////////////////////////////////////
         
-    disc = Teuchos::rcp( new DiscretizationInterface(settings, Comm, mesh, physics) );
-    params = Teuchos::rcp( new ParameterManager<SolverNode>(Comm, settings, mesh, physics, disc));
-    param_indices = params->getIndices(which_params);
+    disc = Teuchos::rcp( new DiscretizationInterface(settings, Comm_, mesh, physics) );
+    params = Teuchos::rcp( new ParameterManager<SolverNode>(Comm_, settings, mesh, physics, disc));
+    param_indices = params->getParameterIndices(which_params);
 }
 
 void ObservationInterface::ResetParameters(const std::vector<double> &parameters) {
@@ -104,7 +104,7 @@ Teuchos::RCP<AnalysisManager> ObservationInterface::SetupAnalysis() {
     ////////////////////////////////////////////////////////////////////////////////
     // Purge Panzer memory before solving
     ////////////////////////////////////////////////////////////////////////////////
-      
+    int debug_level = settings->get<int>("debug level",0);
     if (settings->get<bool>("enable memory purge",false)) {
       if (debug_level > 0 && Comm->getRank() == 0) {
         std::cout << "******** Starting driver memory purge ..." << std::endl;
@@ -157,21 +157,22 @@ Teuchos::RCP<AnalysisManager> ObservationInterface::SetupAnalysis() {
 }
 
 double ObservationInterface::observe(const std::vector<double> &parameters) {
-    this->ResetParams(parameters);
-    Teuchos::RCP<AnalysisManager> analysis = this->SetupAnalysis(params);
+    this->ResetParameters(parameters);
+    Teuchos::RCP<AnalysisManager> analysis = this->SetupAnalysis();
     DFAD objfun = analysis->forwardSolve();
     return objfun.val();
 }
 
 double ObservationInterface::observeDerivative(const std::vector<double> &parameters, std::vector<double> &gradient_out) {
-    this->ResetParams(parameters);
-    Teuchos::RCP<AnalysisManager> analysis = this->SetupAnalysis(params);
+    this->ResetParameters(parameters);
+    Teuchos::RCP<AnalysisManager> analysis = this->SetupAnalysis();
 
     DFAD objfun = analysis->forwardSolve();
     
     MrHyDE_OptVector sens = analysis->adjointSolve();
     auto derivatives = sens.getParameter();
     for(int i = 0; i < param_indices.size(); i++) {
+        int idx = param_indices[i];
         gradient_out[i] = (*derivatives)[idx];
     }
     return objfun.val();

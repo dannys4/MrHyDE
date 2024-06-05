@@ -59,7 +59,7 @@ int main(int argc,char * argv[]) {
     // Import default and user-defined settings into a parameter list
     ////////////////////////////////////////////////////////////////////////////////
     
-    Teuchos::RCP<Teuchos::ParameterList> settings = UserInterface(input_file_name);
+    Teuchos::RCP<Teuchos::ParameterList> settings = UserInterfaceFactory::UserInterface(input_file_name);
     
     verbosity = settings->get<int>("verbosity",0);
     debug_level = settings->get<int>("debug level",0);

@@ -1,3 +1,19 @@
+/** \file   observationInterface.hpp
+ \brief  Contains the observation interface to MrHyDE.
+ \author Created by D. Sharp
+ */
+
+#ifndef MRHYDE_OBSERVATIONINTERFACE_H
+#define MRHYDE_OBSERVATIONINTERFACE_H
+
+#include "trilinos.hpp"
+#include "managers/postprocessManager.hpp"
+#include "managers/parameterManager.hpp"
+#include "managers/analysisManager.hpp"
+#include "interfaces/meshInterface.hpp"
+#include "interfaces/physicsInterface.hpp"
+#include "interfaces/userInterface.hpp"
+
 /**
  * Create an interface constructed from a filename for an input
  * file and then create some kind of function (and derivative)
@@ -7,9 +23,9 @@
 namespace MrHyDE{
     class ObservationInterface {
         public:
-            ObservationInterface(std::string filename);
+            ObservationInterface(std::string filename, Teuchos::RCP<MpiComm> & Comm_, std::vector<std::string>& which_params);
             double observe(const std::vector<double> &parameters);
-            void observeDerivative(const std::vector<double> &parameters, std::vector<double> &derivative);
+            double observeDerivative(const std::vector<double> &parameters, std::vector<double> &gradient_out);
 
         private:
             
@@ -28,3 +44,5 @@ namespace MrHyDE{
             std::string filename;
     };
 }
+
+#endif // MRHYDE_OBSERVATIONINTERFACE_H

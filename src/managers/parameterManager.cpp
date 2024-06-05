@@ -1226,6 +1226,7 @@ vector<int> ParameterManager<Node>::getParameterIndices(const std::vector<std::s
   return indices;
 }
 
+template<class Node>
 void ParameterManager<Node>::setParameters(const std::vector<double> &new_vals, const std::vector<int> &indices) {
   for (size_t i=0; i<indices.size(); i++) {
     // TODO: Test if paramvals[indices[i]] is of length 1, i.e., scalar
