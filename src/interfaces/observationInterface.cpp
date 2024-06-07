@@ -9,7 +9,6 @@ ObservationInterface::ObservationInterface(
 
     settings = UserInterfaceFactory::UserInterface(filename);
     // TODO: check that the postprocess is an observation with adjoint
-    std::cout << "num params: " << which_params.size() << std::endl;
     
     ////////////////////////////////////////////////////////////////////////////////
     // Create the mesh
@@ -39,8 +38,6 @@ ObservationInterface::ObservationInterface(
     disc = Teuchos::rcp( new DiscretizationInterface(settings, Comm_, mesh, physics) );
     params = Teuchos::rcp( new ParameterManager<SolverNode>(Comm_, settings, mesh, physics, disc));
     param_indices = params->getParameterIndices(which_params);
-    std::cout << "param indices: length" << param_indices.size() << ", (";
-    for (auto i : param_indices) std::cout << i << ", ";
     std::cout << ")" << std::endl;
 }
 
