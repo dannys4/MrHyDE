@@ -38,7 +38,6 @@ ObservationInterface::ObservationInterface(
     disc = Teuchos::rcp( new DiscretizationInterface(settings, Comm_, mesh, physics) );
     params = Teuchos::rcp( new ParameterManager<SolverNode>(Comm_, settings, mesh, physics, disc));
     param_indices = params->getParameterIndices(which_params);
-    std::cout << ")" << std::endl;
 }
 
 void ObservationInterface::ResetParameters(const std::vector<double> &parameters) {
