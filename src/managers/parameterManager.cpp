@@ -1218,7 +1218,6 @@ vector<ScalarT> ParameterManager<Node>::getStochasticParams(const std::string & 
 template<class Node>
 vector<int> ParameterManager<Node>::getParameterIndices(const std::vector<std::string> &whichparam) {
   vector<int> indices (whichparam.size());
-  std::cout << "getParameterIndices: whichparam.size() = " << whichparam.size() << std::endl;
   for (size_t i=0; i<whichparam.size(); i++) {
     for (size_t j=0; j<paramnames.size(); j++) {
       if (paramnames[j] == whichparam[i]) {
